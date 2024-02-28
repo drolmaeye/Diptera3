@@ -33,6 +33,7 @@ class Window(qtw.QMainWindow):
         self.right_side_widget.setLayout(self.right_side_layout)
         self.main_layout.addWidget(self.right_side_widget)
 
+
         '''Menu bar'''
 
         # actions
