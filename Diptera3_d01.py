@@ -62,10 +62,10 @@ class Window(qtw.QMainWindow):
         self.left_side_layout.addWidget(self.plot_toolbar)
 
         # create plot toolbar widgets
-        self.reset_markers_label = qtw.QLabel('Reset')
-        self.reset_vertical_markers_button = qtw.QPushButton('Vertical markers')
-        self.reset_horizontal_markers_button = qtw.QPushButton('Horizontal markers')
-        self.reset_all_markers_button = qtw. QPushButton('All markers')
+        self.reset_markers_label = qtw.QLabel('Reset markers')
+        self.reset_vertical_markers_button = qtw.QPushButton('Vertical')
+        self.reset_horizontal_markers_button = qtw.QPushButton('Horizontal')
+        self.reset_all_markers_button = qtw. QPushButton('All')
         self.position_difference_label = qtw.QLabel('Difference')
         self.position_difference_input = qtw.QLineEdit()
         self.overlay_grid_marker_checkbox = qtw.QCheckBox('Overlay 2D grid')
