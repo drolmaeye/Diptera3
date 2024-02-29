@@ -235,7 +235,7 @@ class Window(qtw.QMainWindow):
         self.centering_control_layout.addWidget(self.y_minus, 1, 2)
         self.centering_control_layout.addWidget(self.y_zero, 1, 3)
         self.centering_control_layout.addWidget(self.y_plus, 1, 4)
-        self.centering_control_layout.addWidget(self.x_correciton, 1, 5)
+        self.centering_control_layout.addWidget(self.x_correction, 1, 5)
         self.centering_control_layout.addWidget(self.y_correction, 1, 6)
 
         self.centering_control_layout.addWidget(self.target_x_position_label, 2, 3, 1, 2)
