@@ -33,7 +33,6 @@ class Window(qtw.QMainWindow):
         self.right_side_widget.setLayout(self.right_side_layout)
         self.main_layout.addWidget(self.right_side_widget)
 
-
         '''Menu bar'''
 
         # actions
@@ -62,11 +61,57 @@ class Window(qtw.QMainWindow):
         self.plot_toolbar.setLayout(self.plot_toolbar_layout)
         self.left_side_layout.addWidget(self.plot_toolbar)
 
+        # create plot toolbar widgets
+        self.reset_markers_label = qtw.QLabel('Reset')
+        self.reset_vertical_markers_button = qtw.QPushButton('Vertical markers')
+        self.reset_horizontal_markers_button = qtw.QPushButton('Horizontal markers')
+        self.reset_all_markers_button = qtw. QPushButton('All markers')
+        self.position_difference_label = qtw.QLabel('Difference')
+        self.position_difference_input = qtw.QLineEdit()
+        self.overlay_grid_marker_checkbox = qtw.QCheckBox('Overlay 2D grid')
+        self.overlay_position_markers_checkbox = qtw.QCheckBox('Overlay 2D position')
+
+        # add plot toolbar widgets to plot toolbar layout
+        self.plot_toolbar_layout.addWidget(self.reset_markers_label)
+        self.plot_toolbar_layout.addWidget(self.reset_vertical_markers_button)
+        self.plot_toolbar_layout.addWidget(self.reset_horizontal_markers_button)
+        self.plot_toolbar_layout.addWidget(self.reset_all_markers_button)
+        self.plot_toolbar_layout.addWidget(self.position_difference_label)
+        self.plot_toolbar_layout.addWidget(self.position_difference_input)
+        self.plot_toolbar_layout.addWidget(self.overlay_grid_marker_checkbox)
+        self.plot_toolbar_layout.addWidget(self.overlay_position_markers_checkbox)
+
         '''File control'''
 
+        # create file control groupbox and add to the left side layout
         self.file_control = qtw.QGroupBox()
         self.file_control.setTitle('File Control')
+        self.file_control_layout = qtw.QGridLayout()
+        self.file_control.setLayout(self.file_control_layout)
         self.left_side_layout.addWidget(self.file_control)
+
+        # create file control widgets
+        self.current_file_label = qtw.QLabel('Current scan file')
+        self.current_file_spinbox = qtw.QSpinBox()
+        self.load_file_button = qtw.QPushButton('Load data')
+        self.save_file_button = qtw.QPushButton('Save ASCII')
+
+        self.slice_checkbox = qtw.QCheckBox('2D slice')
+        self.slice_label = qtw.QLabel('Current slice')
+        self.slice_spinbox = qtw.QSpinBox()
+        self.image_index_label = qtw.QLabel('Image index')
+        self.image_index_input = qtw.QLineEdit()
+
+        # add file control widgets to the file control groupbox
+        self.file_control_layout.addWidget(self.current_file_label, 0, 0)
+        self.file_control_layout.addWidget(self.current_file_spinbox, 0, 1, 1, 3)
+        self.file_control_layout.addWidget(self.load_file_button, 0, 4)
+        self.file_control_layout.addWidget(self.save_file_button, 0, 5)
+        self.file_control_layout.addWidget(self.slice_checkbox, 1, 0)
+        self.file_control_layout.addWidget(self.slice_label, 1, 1)
+        self.file_control_layout.addWidget(self.slice_spinbox, 1, 2)
+        self.file_control_layout.addWidget(self.image_index_label, 1, 4)
+        self.file_control_layout.addWidget(self.image_index_input, 1, 5)
 
         '''
         Right side
@@ -171,7 +216,7 @@ class Window(qtw.QMainWindow):
         self.y_minus = qtw.QLineEdit()
         self.y_zero = qtw.QLineEdit()
         self.y_plus = qtw.QLineEdit()
-        self.x_correciton = qtw.QLineEdit()
+        self.x_correction = qtw.QLineEdit()
         self.y_correction = qtw.QLineEdit()
 
         self.target_x_position_label = qtw.QLabel('Final target position -->')
@@ -284,13 +329,32 @@ class Window(qtw.QMainWindow):
         self.position_control_layout.addWidget(self.active_vertical_axis, 2, 1, 1, 2)
         self.position_control_layout.addWidget(self.center_position, 2, 4)
 
-        '''Big buttons'''
+        '''Windows control'''
 
+        # create windows control groupbox and add to right side layout
         self.windows_control = qtw.QGroupBox()
         self.windows_control.setTitle('Windows Control')
+        self.windows_control_layout = qtw.QGridLayout()
+        self.windows_control.setLayout(self.windows_control_layout)
         self.right_side_layout.addWidget(self.windows_control)
 
-        #End UI
+        # create windows control widgets
+        self.overlays_button = qtw.QPushButton('Overlays')
+        self.imaging_button = qtw.QPushButton('Imaging')
+        self.rastering_button = qtw.QPushButton('Rastering')
+        self.alignment_button = qtw.QPushButton('Alignment')
+        self.abort_button = qtw.QPushButton('Abort')
+        self.quit_button = qtw.QPushButton('Quit')
+
+        # add windows control widgets to windows control groupbox
+        self.windows_control_layout.addWidget(self.overlays_button, 0, 0)
+        self.windows_control_layout.addWidget(self.imaging_button, 0, 1)
+        self.windows_control_layout.addWidget(self.rastering_button, 0, 2)
+        self.windows_control_layout.addWidget(self.alignment_button, 1, 0)
+        self.windows_control_layout.addWidget(self.abort_button, 1, 1)
+        self.windows_control_layout.addWidget(self.quit_button, 1, 2)
+
+        # end ui
         self.show()
 
 
