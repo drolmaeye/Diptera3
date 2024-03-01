@@ -15,6 +15,7 @@ class Window(qtw.QMainWindow):
         # Establish MainWindow appearance
         self.setWindowTitle('Diptera3')
         self.setGeometry(100, 100, 1080, 720)
+        # self.setStyleSheet('font-size: 10pt;' 'background-color: #516b54;' 'color: white')
 
         # create central widget
         self.main_widget = qtw.QWidget()
@@ -38,7 +39,6 @@ class Window(qtw.QMainWindow):
         # actions
         self.close_diptera_action = qtw.QAction('Exit', self)
         self.close_diptera_action.setShortcut('Ctrl+Q')
-        # self.close_diptera_action.triggered.connect(self.closeEvent)
 
         # make menu, add headings, add actions
         self.main_menu = self.menuBar()
@@ -92,7 +92,9 @@ class Window(qtw.QMainWindow):
 
         # create file control widgets
         self.current_file_label = qtw.QLabel('Current scan file')
-        self.current_file_spinbox = qtw.QSpinBox()
+        self.current_file = qtw.QLineEdit()
+        self.current_file_decrement = qtw.QPushButton('<')
+        self.current_file_increment = qtw.QPushButton('>')
         self.load_file_button = qtw.QPushButton('Load data')
         self.save_file_button = qtw.QPushButton('Save ASCII')
 
@@ -104,7 +106,9 @@ class Window(qtw.QMainWindow):
 
         # add file control widgets to the file control groupbox
         self.file_control_layout.addWidget(self.current_file_label, 0, 0)
-        self.file_control_layout.addWidget(self.current_file_spinbox, 0, 1, 1, 3)
+        self.file_control_layout.addWidget(self.current_file, 0, 1)
+        self.file_control_layout.addWidget(self.current_file_decrement, 0, 2)
+        self.file_control_layout.addWidget(self.current_file_increment, 0, 3)
         self.file_control_layout.addWidget(self.load_file_button, 0, 4)
         self.file_control_layout.addWidget(self.save_file_button, 0, 5)
         self.file_control_layout.addWidget(self.slice_checkbox, 1, 0)
@@ -162,37 +166,37 @@ class Window(qtw.QMainWindow):
         self.fly_z_button = qtw.QPushButton('Fly z')
 
         # add scan control widgets to scan control groupbox
-        self.scan_control_layout.addWidget(self.select_axis_label, 0, 1, 1, 2)
-        self.scan_control_layout.addWidget(self.relative_min_label, 0, 3)
-        self.scan_control_layout.addWidget(self.step_size_label, 0, 4)
-        self.scan_control_layout.addWidget(self.relative_max_label, 0, 5)
-        self.scan_control_layout.addWidget(self.num_points_label, 0, 6)
+        self.scan_control_layout.addWidget(self.select_axis_label, 0, 1)
+        self.scan_control_layout.addWidget(self.relative_min_label, 0, 2)
+        self.scan_control_layout.addWidget(self.step_size_label, 0, 3)
+        self.scan_control_layout.addWidget(self.relative_max_label, 0, 4)
+        self.scan_control_layout.addWidget(self.num_points_label, 0, 5)
 
         self.scan_control_layout.addWidget(self.fly_checkbox, 1, 0)
-        self.scan_control_layout.addWidget(self.fly_axis, 1, 1, 1, 2)
-        self.scan_control_layout.addWidget(self.fly_min, 1, 3)
-        self.scan_control_layout.addWidget(self.fly_stepsize, 1, 4)
-        self.scan_control_layout.addWidget(self.fly_max, 1, 5)
-        self.scan_control_layout.addWidget(self.fly_numpts, 1, 6)
+        self.scan_control_layout.addWidget(self.fly_axis, 1, 1)
+        self.scan_control_layout.addWidget(self.fly_min, 1, 2)
+        self.scan_control_layout.addWidget(self.fly_stepsize, 1, 3)
+        self.scan_control_layout.addWidget(self.fly_max, 1, 4)
+        self.scan_control_layout.addWidget(self.fly_numpts, 1, 5)
 
         self.scan_control_layout.addWidget(self.step_checkbox, 2, 0)
-        self.scan_control_layout.addWidget(self.step_axis, 2, 1, 1, 2)
-        self.scan_control_layout.addWidget(self.step_min, 2, 3)
-        self.scan_control_layout.addWidget(self.step_stepsize, 2, 4)
-        self.scan_control_layout.addWidget(self.step_max, 2, 5)
-        self.scan_control_layout.addWidget(self.step_numpts, 2, 6)
+        self.scan_control_layout.addWidget(self.step_axis, 2, 1)
+        self.scan_control_layout.addWidget(self.step_min, 2, 2)
+        self.scan_control_layout.addWidget(self.step_stepsize, 2, 3)
+        self.scan_control_layout.addWidget(self.step_max, 2, 4)
+        self.scan_control_layout.addWidget(self.step_numpts, 2, 5)
 
         self.scan_control_layout.addWidget(self.scan_directory_label, 3, 0)
-        self.scan_control_layout.addWidget(self.scan_directory, 3, 1, 1, 3)
-        self.scan_control_layout.addWidget(self.scan_number_label, 3, 4)
-        self.scan_control_layout.addWidget(self.scan_number, 3, 5)
-        self.scan_control_layout.addWidget(self.select_directory_button, 3, 6)
+        self.scan_control_layout.addWidget(self.scan_directory, 3, 1)
+        self.scan_control_layout.addWidget(self.scan_number_label, 3, 2)
+        self.scan_control_layout.addWidget(self.scan_number, 3, 3)
+        self.scan_control_layout.addWidget(self.select_directory_button, 3, 4)
 
-        self.scan_control_layout.addWidget(self.count_time_label, 4, 0, 1, 2)
-        self.scan_control_layout.addWidget(self.count_time, 4, 2)
-        self.scan_control_layout.addWidget(self.start_scan_button, 4, 3, 1, 2)
-        self.scan_control_layout.addWidget(self.fly_y_button, 4, 5)
-        self.scan_control_layout.addWidget(self.fly_z_button, 4, 6)
+        self.scan_control_layout.addWidget(self.count_time_label, 4, 0)
+        self.scan_control_layout.addWidget(self.count_time, 4, 1)
+        self.scan_control_layout.addWidget(self.start_scan_button, 4, 2)
+        self.scan_control_layout.addWidget(self.fly_y_button, 4, 3)
+        self.scan_control_layout.addWidget(self.fly_z_button, 4, 4)
 
         '''Centering control'''
 
@@ -205,6 +209,7 @@ class Window(qtw.QMainWindow):
 
         # create centering control widgets
         self.delta_omega_label = qtw.QLabel(u'\u0394\u03c9')
+        self.delta_omega_label.setAlignment(qtc.Qt.AlignCenter)
         self.y_minus_label = qtw.QLabel('y at ' + u'\u03c9' + '-')
         self.y_zero_label = qtw.QLabel('y at ' + u'\u03c9' + '0')
         self.y_plus_label = qtw.QLabel('y at ' + u'\u03c9' + '+')
@@ -268,20 +273,20 @@ class Window(qtw.QMainWindow):
         self.scaling_min = qtw.QSpinBox()
 
         # add intensity control widgets to intensity control groupbox
-        self.intensity_control_layout.addWidget(self.active_counter_label, 0, 1, 1, 2)
-        self.intensity_control_layout.addWidget(self.scale_factor_label, 0, 3)
-        self.intensity_control_layout.addWidget(self.data_type_label, 0, 4)
-        self.intensity_control_layout.addWidget(self.scaling_label, 0, 5, 1, 2)
+        self.intensity_control_layout.addWidget(self.active_counter_label, 0, 1)
+        self.intensity_control_layout.addWidget(self.scale_factor_label, 0, 2)
+        self.intensity_control_layout.addWidget(self.data_type_label, 0, 3)
+        self.intensity_control_layout.addWidget(self.scaling_label, 0, 4, 1, 2)
 
         self.intensity_control_layout.addWidget(self.i_signal_label, 1, 0)
-        self.intensity_control_layout.addWidget(self.i_signal_counter, 1, 1, 1, 2)
-        self.intensity_control_layout.addWidget(self.scale_factor, 1, 3, 2, 1)
-        self.intensity_control_layout.addWidget(self.data_type, 1, 4, 2, 1)
-        self.intensity_control_layout.addWidget(self.scaling_max, 1, 5)
-        self.intensity_control_layout.addWidget(self.colors, 1, 6, 2, 1)
+        self.intensity_control_layout.addWidget(self.i_signal_counter, 1, 1)
+        self.intensity_control_layout.addWidget(self.scale_factor, 1, 2)
+        self.intensity_control_layout.addWidget(self.data_type, 1, 3)
+        self.intensity_control_layout.addWidget(self.scaling_max, 1, 4)
+        self.intensity_control_layout.addWidget(self.colors, 1, 5)
 
         self.intensity_control_layout.addWidget(self.i_reference_checkbox, 2, 0)
-        self.intensity_control_layout.addWidget(self.i_reference_counter, 2, 1, 1, 2)
+        self.intensity_control_layout.addWidget(self.i_reference_counter, 2, 1)
         self.intensity_control_layout.addWidget(self.scaling_min, 2, 5)
 
         '''Position control'''
@@ -353,6 +358,11 @@ class Window(qtw.QMainWindow):
         self.windows_control_layout.addWidget(self.alignment_button, 1, 0)
         self.windows_control_layout.addWidget(self.abort_button, 1, 1)
         self.windows_control_layout.addWidget(self.quit_button, 1, 2)
+
+        # file = open("stylesheet.qss")
+        # stylesheet = file.read()
+        # self.setStyleSheet(stylesheet)
+        # file.close()
 
         # end ui
         self.show()
