@@ -7,6 +7,8 @@ import pyqtgraph as pg
 
 class Window(qtw.QMainWindow):
 
+    line_edit_width_a = 60
+
     def __init__(self):
         super().__init__()
 
@@ -15,7 +17,7 @@ class Window(qtw.QMainWindow):
         # Establish MainWindow appearance
         self.setWindowTitle('Diptera3')
         self.setGeometry(100, 100, 1080, 720)
-        # self.setStyleSheet('font-size: 10pt;' 'background-color: #516b54;' 'color: white')
+        self.setStyleSheet('font-size: 10pt')
 
         # create central widget
         self.main_widget = qtw.QWidget()
@@ -125,33 +127,64 @@ class Window(qtw.QMainWindow):
 
         # create scan control groupbox and add to the right side layout
         self.scan_control = qtw.QGroupBox()
+        font = self.scan_control.font()
+        font.setBold(True)
+        self.scan_control.setFont(font)
         self.scan_control.setTitle('Scan Control')
-        self.scan_control_layout = qtw.QGridLayout()
+        self.scan_control_layout = qtw.QVBoxLayout()
+        self.scan_control_layout.setAlignment(qtc.Qt.AlignTop)
         self.scan_control.setLayout(self.scan_control_layout)
         self.right_side_layout.addWidget(self.scan_control)
 
         # create scan control widgets
         self.select_axis_label = qtw.QLabel('Stage')
-        self.relative_min_label = qtw.QLabel('Relative min.')
+        self.select_axis_label.setAlignment(qtc.Qt.AlignCenter)
+        self.relative_min_label = qtw.QLabel('Rel. min.')
+        self.relative_min_label.setAlignment(qtc.Qt.AlignCenter)
         self.step_size_label = qtw.QLabel('Step size')
-        self.relative_max_label = qtw.QLabel('Relative max.')
+        self.step_size_label.setAlignment(qtc.Qt.AlignCenter)
+        self.relative_max_label = qtw.QLabel('Rel. max.')
+        self.relative_max_label.setAlignment(qtc.Qt.AlignCenter)
         self.num_points_label = qtw.QLabel('Points')
+        self.num_points_label.setAlignment(qtc.Qt.AlignCenter)
 
         self.fly_checkbox = qtw.QCheckBox('Fly axis')
         self.fly_axis = qtw.QComboBox()
         self.fly_axis.addItems(['Cen Y', 'Cen Z', 'More'])
-        self.fly_min = qtw.QLineEdit()
-        self.fly_stepsize = qtw.QLineEdit()
-        self.fly_max = qtw.QLineEdit()
-        self.fly_numpts = qtw.QLineEdit()
+        self.fly_min = qtw.QLineEdit('-0.100')
+        self.fly_min.setValidator(qtg.QDoubleValidator(decimals=3))
+        self.fly_min.setFixedWidth(Window.line_edit_width_a)
+        self.fly_min.setAlignment(qtc.Qt.AlignCenter)
+        self.fly_stepsize = qtw.QLabel('0.0040')
+        self.fly_stepsize.setTextInteractionFlags(qtc.Qt.TextSelectableByMouse)
+        self.fly_stepsize.setFrameShape(qtw.QFrame.Panel)
+        self.fly_stepsize.setFrameShadow(qtw.QFrame.Sunken)
+        self.fly_stepsize.setFixedWidth(Window.line_edit_width_a)
+        self.fly_stepsize.setAlignment(qtc.Qt.AlignCenter)
+        self.fly_max = qtw.QLineEdit('0.100')
+        self.fly_max.setValidator(qtg.QDoubleValidator(decimals=3))
+        self.fly_max.setFixedWidth(Window.line_edit_width_a)
+        self.fly_max.setAlignment(qtc.Qt.AlignCenter)
+        self.fly_numpts = qtw.QLineEdit('51')
+        self.fly_numpts.setValidator(qtg.QIntValidator(bottom=1))
+        self.fly_numpts.setFixedWidth(Window.line_edit_width_a)
+        self.fly_numpts.setAlignment(qtc.Qt.AlignCenter)
 
         self.step_checkbox = qtw.QCheckBox('Step axis')
         self.step_axis = qtw.QComboBox()
         self.step_axis.addItems(['Cen Y', 'Cen Z', 'More'])
         self.step_min = qtw.QLineEdit()
+        self.step_min.setFixedWidth(Window.line_edit_width_a)
+        self.step_min.setAlignment(qtc.Qt.AlignCenter)
         self.step_stepsize = qtw.QLineEdit()
+        self.step_stepsize.setFixedWidth(Window.line_edit_width_a)
+        self.step_stepsize.setAlignment(qtc.Qt.AlignCenter)
         self.step_max = qtw.QLineEdit()
+        self.step_max.setFixedWidth(Window.line_edit_width_a)
+        self.step_max.setAlignment(qtc.Qt.AlignCenter)
         self.step_numpts = qtw.QLineEdit()
+        self.step_numpts.setFixedWidth(Window.line_edit_width_a)
+        self.step_numpts.setAlignment(qtc.Qt.AlignCenter)
 
         self.scan_directory_label = qtw.QLabel('Scan directory')
         self.scan_directory = qtw.QLineEdit()
@@ -165,38 +198,50 @@ class Window(qtw.QMainWindow):
         self.fly_y_button = qtw.QPushButton('Fly y')
         self.fly_z_button = qtw.QPushButton('Fly z')
 
-        # add scan control widgets to scan control groupbox
-        self.scan_control_layout.addWidget(self.select_axis_label, 0, 1)
-        self.scan_control_layout.addWidget(self.relative_min_label, 0, 2)
-        self.scan_control_layout.addWidget(self.step_size_label, 0, 3)
-        self.scan_control_layout.addWidget(self.relative_max_label, 0, 4)
-        self.scan_control_layout.addWidget(self.num_points_label, 0, 5)
+        # create and add scan control widgets to sublayouts
+        self.scan_control_sublayout_a = qtw.QGridLayout()
+        self.scan_control_sublayout_b = qtw.QHBoxLayout()
+        self.scan_control_sublayout_c = qtw.QHBoxLayout()
 
-        self.scan_control_layout.addWidget(self.fly_checkbox, 1, 0)
-        self.scan_control_layout.addWidget(self.fly_axis, 1, 1)
-        self.scan_control_layout.addWidget(self.fly_min, 1, 2)
-        self.scan_control_layout.addWidget(self.fly_stepsize, 1, 3)
-        self.scan_control_layout.addWidget(self.fly_max, 1, 4)
-        self.scan_control_layout.addWidget(self.fly_numpts, 1, 5)
+        self.scan_control_sublayout_a.addWidget(self.select_axis_label, 0, 1, 1, 2)
+        self.scan_control_sublayout_a.addWidget(self.relative_min_label, 0, 3)
+        self.scan_control_sublayout_a.addWidget(self.step_size_label, 0, 4)
+        self.scan_control_sublayout_a.addWidget(self.relative_max_label, 0, 5)
+        self.scan_control_sublayout_a.addWidget(self.num_points_label, 0, 6)
 
-        self.scan_control_layout.addWidget(self.step_checkbox, 2, 0)
-        self.scan_control_layout.addWidget(self.step_axis, 2, 1)
-        self.scan_control_layout.addWidget(self.step_min, 2, 2)
-        self.scan_control_layout.addWidget(self.step_stepsize, 2, 3)
-        self.scan_control_layout.addWidget(self.step_max, 2, 4)
-        self.scan_control_layout.addWidget(self.step_numpts, 2, 5)
+        self.scan_control_sublayout_a.addWidget(self.fly_checkbox, 1, 0)
+        self.scan_control_sublayout_a.addWidget(self.fly_axis, 1, 1, 1, 2)
+        self.scan_control_sublayout_a.addWidget(self.fly_min, 1, 3)
+        self.scan_control_sublayout_a.addWidget(self.fly_stepsize, 1, 4)
+        self.scan_control_sublayout_a.addWidget(self.fly_max, 1, 5)
+        self.scan_control_sublayout_a.addWidget(self.fly_numpts, 1, 6)
 
-        self.scan_control_layout.addWidget(self.scan_directory_label, 3, 0)
-        self.scan_control_layout.addWidget(self.scan_directory, 3, 1)
-        self.scan_control_layout.addWidget(self.scan_number_label, 3, 2)
-        self.scan_control_layout.addWidget(self.scan_number, 3, 3)
-        self.scan_control_layout.addWidget(self.select_directory_button, 3, 4)
+        self.scan_control_sublayout_a.addWidget(self.step_checkbox, 2, 0)
+        self.scan_control_sublayout_a.addWidget(self.step_axis, 2, 1, 1, 2)
+        self.scan_control_sublayout_a.addWidget(self.step_min, 2, 3)
+        self.scan_control_sublayout_a.addWidget(self.step_stepsize, 2, 4)
+        self.scan_control_sublayout_a.addWidget(self.step_max, 2, 5)
+        self.scan_control_sublayout_a.addWidget(self.step_numpts, 2, 6)
 
-        self.scan_control_layout.addWidget(self.count_time_label, 4, 0)
-        self.scan_control_layout.addWidget(self.count_time, 4, 1)
-        self.scan_control_layout.addWidget(self.start_scan_button, 4, 2)
-        self.scan_control_layout.addWidget(self.fly_y_button, 4, 3)
-        self.scan_control_layout.addWidget(self.fly_z_button, 4, 4)
+        self.scan_control_sublayout_b.addWidget(self.scan_directory_label)
+        self.scan_control_sublayout_b.addWidget(self.scan_directory)
+        self.scan_control_sublayout_b.addWidget(self.scan_number_label)
+        self.scan_control_sublayout_b.addWidget(self.scan_number)
+        self.scan_control_sublayout_b.addWidget(self.select_directory_button)
+
+        self.scan_control_sublayout_c.addWidget(self.count_time_label)
+        self.scan_control_sublayout_c.addWidget(self.count_time)
+        self.scan_control_sublayout_c.addWidget(self.start_scan_button)
+        self.scan_control_sublayout_c.addWidget(self.fly_y_button)
+        self.scan_control_sublayout_c.addWidget(self.fly_z_button)
+
+        # add scan control sublayouts to the scan control layout
+        self.scan_control_layout.addLayout(self.scan_control_sublayout_a)
+        self.scan_control_layout.addSpacing(8)
+        self.scan_control_layout.addLayout(self.scan_control_sublayout_b)
+        self.scan_control_layout.addSpacing(8)
+        self.scan_control_layout.addLayout(self.scan_control_sublayout_c)
+        self.scan_control_layout.addSpacing(4)
 
         '''Centering control'''
 
@@ -371,4 +416,6 @@ class Window(qtw.QMainWindow):
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
     mw = Window()
+    step = (float(mw.fly_max.text()) - float(mw.fly_min.text()))/float(mw.fly_numpts.text())
+    print(step)
     sys.exit(app.exec())
